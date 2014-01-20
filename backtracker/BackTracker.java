@@ -37,7 +37,7 @@ public class BackTracker {
          * @return True if the search has finished successfully, False
          *         otherwise
          */
-        public boolean found(ArrayList<Branchable> path);
+        public boolean found(ArrayList path);
 
         /**
          * The prune() method is called each time the backtracking search
@@ -50,7 +50,7 @@ public class BackTracker {
          * @return True if algorithm should stop searching this branch, False
          *         otherwise
          */
-        public boolean prune(ArrayList<Branchable> path);
+        public boolean prune(ArrayList path);
     }
 
     /**
@@ -63,7 +63,7 @@ public class BackTracker {
      */
     public static abstract class BestTracker {
         // Keep track of the best path so far
-        private ArrayList<Branchable> bestPath;
+        private ArrayList<AbstractBranchable> bestPath;
         
         public BestTracker() {
             setBestPath(null);
@@ -73,7 +73,7 @@ public class BackTracker {
          * Mark this path as the best path found so far.
          * @param bestPath The best path found so far
          */
-        public void setBestPath(ArrayList<Branchable> bestPath) {
+        public void setBestPath(ArrayList<AbstractBranchable> bestPath) {
             this.bestPath = bestPath;
         }
         
@@ -81,7 +81,7 @@ public class BackTracker {
          * Get the best path found so far.
          * @return The best path so far
          */
-        public ArrayList<Branchable> getBestPath() {
+        public ArrayList<AbstractBranchable> getBestPath() {
             return bestPath;
         }
         
@@ -96,7 +96,7 @@ public class BackTracker {
          * @param newPath The path to compare to the current best path
          * @return True if the new path is better, False otherwise
          */
-        public abstract boolean isBetter(ArrayList<Branchable> newPath);
+        public abstract boolean isBetter(ArrayList newPath);
     }
     
     private BackTrackCallback callback; // the callback object
@@ -116,7 +116,7 @@ public class BackTracker {
      * a parameter.
      * @param tree The tree to search
      */
-    public BackTracker(Branchable tree) {
+    public BackTracker(AbstractBranchable tree) {
         this(tree,null,null);
     }
     
@@ -127,7 +127,7 @@ public class BackTracker {
      * @param tree The tree to search
      * @param callback The callback object
      */
-    public BackTracker(Branchable tree, BackTrackCallback callback) {
+    public BackTracker(AbstractBranchable tree, BackTrackCallback callback) {
         this(tree,callback,null);
     }
     
@@ -138,7 +138,7 @@ public class BackTracker {
      * @param tree The tree to search
      * @param bestTracker The bestTracker object to keep track of the best path
      */
-    public BackTracker(Branchable tree, BestTracker bestTracker) {
+    public BackTracker(AbstractBranchable tree, BestTracker bestTracker) {
         this(tree, null, bestTracker);
     }
     
@@ -150,7 +150,7 @@ public class BackTracker {
      * @param callback The callback object
      * @param bestTracker The bestTracker object to keep track of the best path
      */
-    public BackTracker(Branchable tree, BackTrackCallback callback,
+    public BackTracker(AbstractBranchable tree, BackTrackCallback callback,
                        BestTracker bestTracker) {
         setTree(tree);
         setCallback(callback);
@@ -161,8 +161,11 @@ public class BackTracker {
      * Set the Branchable tree to search.
      * @param tree The tree to search
      */
-    public void setTree(Branchable tree) {
-        this.tree = tree;
+    public void setTree(AbstractBranchable tree) {
+        if (tree instanceof BinaryBranchable)
+            this.tree = new BinaryBranchAdapter((BinaryBranchable)tree);
+        else
+            this.tree = (Branchable)tree;
     }
     
     /**
@@ -187,7 +190,7 @@ public class BackTracker {
      * Return the best path found in the last back tracking search.
      * @return The best path found, or null if bestTracker object is not set
      */
-    public ArrayList<Branchable> getBestPath() {
+    public ArrayList<AbstractBranchable> getBestPath() {
         return (bestTracker == null) ? null : bestTracker.getBestPath();
     }
     
@@ -198,11 +201,11 @@ public class BackTracker {
      * return False.
      * @return The valid branch (if any) that was found in the search
      */
-    public ArrayList<Branchable> search() {
+    public ArrayList<AbstractBranchable> search() {
         if (tree == null || (callback == null && bestTracker == null))
             return null;
         else
-            return search(tree, new ArrayList<Branchable>());
+            return search(tree, new ArrayList<AbstractBranchable>());
     }
     
     /**
@@ -211,10 +214,13 @@ public class BackTracker {
      * @param path The path traveled so far
      * @return The valid branch (if any) that was found in the search
      */
-    private ArrayList<Branchable> search(Branchable tree,
-                                         ArrayList<Branchable> path) {
-        ArrayList<Branchable> pathSoFar = new ArrayList<Branchable>(path);
-        pathSoFar.add(tree);
+    private ArrayList<AbstractBranchable> search(Branchable tree,
+                                         ArrayList<AbstractBranchable> path) {
+        ArrayList<AbstractBranchable> pathSoFar = new ArrayList<AbstractBranchable>(path);
+        if (tree instanceof BinaryBranchAdapter)
+            pathSoFar.add(((BinaryBranchAdapter)tree).getNode());
+        else
+            pathSoFar.add(tree);
         if (callback != null) {
             if (callback.found(pathSoFar))
                 return pathSoFar;
@@ -228,7 +234,7 @@ public class BackTracker {
         if (hasChildren(tree)) {
             for (Branchable child : tree.getChildren()) {
                 if (child != null) {
-                    ArrayList<Branchable> branch = search(child,pathSoFar);
+                    ArrayList<AbstractBranchable> branch = search(child,pathSoFar);
                     if (branch != null)
                         return branch;
                 }
@@ -242,7 +248,15 @@ public class BackTracker {
      * @param tree The tree to check
      * @return True if at least one branch is present, False otherwise
      */
-    private boolean hasChildren(Branchable tree) {
-        return tree.getChildren() != null;
+    private boolean hasChildren(AbstractBranchable tree) {
+        if (tree instanceof BinaryBranchable) {
+            BinaryBranchable binTree = (BinaryBranchable)tree;
+            return binTree.getLeft() != null || binTree.getRight() != null;
+        }
+        else if (tree instanceof Branchable) {
+            return ((Branchable)tree).getChildren() != null;
+        }
+        else
+            return false;
     }
 }

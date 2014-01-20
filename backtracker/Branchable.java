@@ -12,7 +12,7 @@ package backtracker;
  * @author Dani Dickstein
  * @version 0.1
  */
-public interface Branchable {
+public interface Branchable extends AbstractBranchable {
     /**
      * Get the children of this node.  They should be ordered in the order in
      * which they should be searched.

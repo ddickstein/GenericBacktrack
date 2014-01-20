@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import backtracker.BackTracker;
 import backtracker.BackTracker.BackTrackCallback;
 import backtracker.BackTracker.BestTracker;
-import backtracker.Branchable;
 import backtracker.TreePrinter;
 
 /*
@@ -19,12 +18,12 @@ public class MinValueExample {
     // Create a new callback object
     private static BackTrackCallback callback = new BackTrackCallback() {
         // We want to search the whole tree, so we make found() return false.
-        public boolean found(ArrayList<Branchable> path) {
+        public boolean found(ArrayList path) {
             return false;
         }
         // We want to prune results where the path is no longer in decreasing
         // order.
-        public boolean prune(ArrayList<Branchable> path) {
+        public boolean prune(ArrayList path) {
             if (path.size() < 2)
                 return false;
             IntNode lastNode = (IntNode)path.get(path.size()-1);
@@ -37,9 +36,9 @@ public class MinValueExample {
     private static BestTracker bestTracker = new BestTracker() {
         // We want to check if the smallest value on this path is smaller than
         // the smallest value we have seen so far.
-        public boolean isBetter(ArrayList<Branchable> path) {
+        public boolean isBetter(ArrayList path) {
             int value = ((IntNode)path.get(path.size()-1)).getValue();
-            ArrayList<Branchable> bestPath = getBestPath();
+            ArrayList bestPath = getBestPath();
             if (bestPath == null)
                 return true;
             IntNode bestNode = (IntNode)bestPath.get(bestPath.size()-1);

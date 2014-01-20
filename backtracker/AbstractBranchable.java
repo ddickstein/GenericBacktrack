@@ -1,0 +1,3 @@
+package backtracker;
+
+interface AbstractBranchable { }

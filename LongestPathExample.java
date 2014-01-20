@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import backtracker.BackTracker;
 import backtracker.BackTracker.BackTrackCallback;
 import backtracker.BackTracker.BestTracker;
-import backtracker.Branchable;
 import backtracker.TreePrinter;
 
 /*
@@ -19,7 +18,7 @@ public class LongestPathExample {
     private static BestTracker bestTracker = new BestTracker() {
         // We want to check if the smallest value on this path is smaller than
         // the smallest value we have seen so far.
-        public boolean isBetter(ArrayList<Branchable> path) {
+        public boolean isBetter(ArrayList path) {
             if (path == null || path.size() == 0)
                 return false;
             IntNode lastNode = (IntNode)path.get(path.size()-1);

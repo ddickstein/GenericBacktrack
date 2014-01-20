@@ -3,14 +3,14 @@
  * IntNode.java
  * by Dani Dickstein
  */
-import backtracker.Branchable;
+import backtracker.BinaryBranchable;
 
 /*
  * The IntNode class is used to provide a sample for what a Branchable node
  * might look like.  It is used in the provided example usages of the
  * BackTracker program.
  */
-public class IntNode implements Branchable {
+public class IntNode implements BinaryBranchable {
     private int value;
     private IntNode left;
     private IntNode right;
@@ -47,9 +47,5 @@ public class IntNode implements Branchable {
     
     public String toString() {
         return ""+value;
-    }
-    
-    public IntNode[] getChildren() {
-        return new IntNode[]{left, right};
     }
 }
