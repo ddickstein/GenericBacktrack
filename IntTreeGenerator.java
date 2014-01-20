@@ -1,11 +1,25 @@
+/*
+ * 1/19/14
+ * IntTreeGenerator.java
+ * by Dani Dickstein
+ */
+
+/*
+ * A program used to generate a random tree of IntNodes.  It is only used in
+ * the example programs for demonstration purposes.
+ */
 public class IntTreeGenerator
 {
+    // Generate a tree of IntNodes that has a depth between mindepth and
+    // maxdepth.
     public static IntNode generate(int mindepth, int maxdepth) {
+        if (maxdepth < mindepth || maxdepth <= 0)
+            return null;
         IntNode root = null;
         int possibilities;
         if (mindepth > 0)
             possibilities = randInt(2) + 1;
-        else if (maxdepth == 1)
+        else if (maxdepth == 0)
             possibilities = 1;
         else
             possibilities = randInt(3);

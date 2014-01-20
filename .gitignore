@@ -1,3 +1,4 @@
 package.bluej
 *.class
 *.ctxt
+/doc

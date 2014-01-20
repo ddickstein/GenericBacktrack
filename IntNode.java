@@ -1,3 +1,15 @@
+/*
+ * 1/19/14
+ * IntNode.java
+ * by Dani Dickstein
+ */
+import backtracker.Branchable;
+
+/*
+ * The IntNode class is used to provide a sample for what a Branchable node
+ * might look like.  It is used in the provided example usages of the
+ * BackTracker program.
+ */
 public class IntNode implements Branchable {
     private int value;
     private IntNode left;
