@@ -48,4 +48,8 @@ public class IntNode implements Branchable {
     public String toString() {
         return ""+value;
     }
+    
+    public IntNode[] getChildren() {
+        return new IntNode[]{left, right};
+    }
 }

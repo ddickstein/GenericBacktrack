@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * BackTracker is a generic backtracking tool that lets you perform a
- * preordered (root, left, right) traversal on a tree.  At each phase you can
+ * preordered traversal on a tree (root before children).  At each phase you can
  * decide whether to return the current branch, prune the rest of the tree, or
  * mark the current branch and keep traversing.
  * 
@@ -225,35 +225,24 @@ public class BackTracker {
             if (bestTracker.isBetter(pathSoFar))
                 bestTracker.setBestPath(pathSoFar);
         }
-        ArrayList<Branchable> leftBranch, rightBranch;
-        if (hasLeft(tree)) {
-            leftBranch = search(tree.getLeft(),pathSoFar);
-            if (leftBranch != null)
-                return leftBranch;
-        }
-        if (hasRight(tree)) {
-            rightBranch = search(tree.getRight(),pathSoFar);
-            if (rightBranch != null)
-                return rightBranch;
+        if (hasChildren(tree)) {
+            for (Branchable child : tree.getChildren()) {
+                if (child != null) {
+                    ArrayList<Branchable> branch = search(child,pathSoFar);
+                    if (branch != null)
+                        return branch;
+                }
+            }
         }
         return null;
     }
     
     /**
-     * Check if this tree node has a left branch.
+     * Check if this tree node has any branches.
      * @param tree The tree to check
-     * @return True if a left branch is present, False otherwise
+     * @return True if at least one branch is present, False otherwise
      */
-    private boolean hasLeft(Branchable tree) {
-        return tree.getLeft() != null;
-    }
-    
-    /**
-     * Check if this tree node has a right branch.
-     * @param tree The tree to check
-     * @return True if a right branch is present, False otherwise
-     */
-    private boolean hasRight(Branchable tree) {
-        return tree.getRight() != null;
+    private boolean hasChildren(Branchable tree) {
+        return tree.getChildren() != null;
     }
 }

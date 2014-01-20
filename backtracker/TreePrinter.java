@@ -43,12 +43,15 @@ public class TreePrinter {
             System.out.println(tree);
         else
             System.out.println(currentPrefix+"|___"+tree);
-        if (tree.getLeft() != null && tree.getRight() != null)
-            printTree(tree.getLeft(),nextPrefix,nextPrefix+"| ",false);
-        else if (tree.getLeft() != null)
-            printTree(tree.getLeft(),nextPrefix,nextPrefix+"  ",false);
-        if (tree.getRight() != null)
-            printTree(tree.getRight(),nextPrefix,nextPrefix+"  ",false);
+        Branchable[] children = tree.getChildren();
+        for (int i = 0; i < children.length; i++) {
+            if (children[i] != null) {
+                if (i < children.length - 1)
+                    printTree(children[i],nextPrefix,nextPrefix+"| ",false);
+                else
+                    printTree(children[i],nextPrefix,nextPrefix+"  ",false);
+            }
+        }
     }
     
     /**
