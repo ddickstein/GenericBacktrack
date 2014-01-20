@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 /**
  * BackTracker is a generic backtracking tool that lets you perform a
- * preordered traversal on a tree (root before children).  At each phase you can
- * decide whether to return the current branch, prune the rest of the tree, or
- * mark the current branch and keep traversing.
+ * preordered traversal on a tree (root before children).  At each phase you
+ * can decide whether to return the current branch, prune the rest of the tree,
+ * or mark the current branch and keep traversing.
  * 
  * @author Dani Dickstein
  * @version 0.1

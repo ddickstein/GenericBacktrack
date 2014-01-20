@@ -14,7 +14,8 @@ package backtracker;
  */
 public interface Branchable {
     /**
-     * Get the children of this node.  They should be ordered in the order in which they should be searched.
+     * Get the children of this node.  They should be ordered in the order in
+     * which they should be searched.
      * @return The children, or null if none found
      */
     public Branchable[] getChildren();
