@@ -19,11 +19,13 @@ public class MinValueExample {
     // Create a new callback object
     private static BackTrackCallback callback = new BackTrackCallback() {
         // We want to search the whole tree, so we make found() return false.
+        @Override
         public boolean found(ArrayList<Branchable> path) {
             return false;
         }
         // We want to prune results where the path is no longer in decreasing
         // order.
+        @Override
         public boolean prune(ArrayList<Branchable> path) {
             if (path.size() < 2)
                 return false;
@@ -37,6 +39,7 @@ public class MinValueExample {
     private static BestTracker bestTracker = new BestTracker() {
         // We want to check if the smallest value on this path is smaller than
         // the smallest value we have seen so far.
+        @Override
         public boolean isBetter(ArrayList<Branchable> path) {
             int value = ((IntNode)path.get(path.size()-1)).getValue();
             ArrayList bestPath = getBestPath();

@@ -23,10 +23,12 @@ public class IntNode implements Branchable {
         setLeft(null);
         setRight(null);
         this.behavior = new BinaryBranchBehavior() {
+            @Override
             public Branchable getRight() {
                 return IntNode.this.getRight();
             }
             
+            @Override
             public Branchable getLeft() {
                 return IntNode.this.getLeft();
             }
@@ -61,6 +63,7 @@ public class IntNode implements Branchable {
         return ""+value;
     }
     
+    @Override
     public BranchBehavior getBranchBehavior() {
         return behavior;
     }
