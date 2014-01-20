@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * preferably short.
  *
  * @author Dani Dickstein
- * @version 0.1
+ * @version 0.2
  */
 public class TreePrinter {
 
@@ -22,7 +22,7 @@ public class TreePrinter {
      * given root.
      * @param tree The tree to print
      */
-    public static void printTree(AbstractBranchable tree) {
+    public static void printTree(Branchable tree) {
         if (tree == null)
             System.out.println("[None]");
         else
@@ -37,16 +37,13 @@ public class TreePrinter {
      *                   values
      * @param rootPrint True if printing the root of the tree, False otherwise
      */
-    private static void printTree(AbstractBranchable tree, String currentPrefix,
+    private static void printTree(Branchable tree, String currentPrefix,
                                   String nextPrefix, boolean rootPrint) {
-        
-        if (tree instanceof BinaryBranchable)
-            tree = new BinaryBranchAdapter((BinaryBranchable)tree);
         if (rootPrint)
             System.out.println(tree);
         else
             System.out.println(currentPrefix+"|___"+tree);
-        Branchable[] children = ((Branchable)tree).getChildren();
+        Branchable[] children = tree.getBranchBehavior().getChildren();
         for (int i = 0; i < children.length; i++) {
             if (children[i] != null) {
                 if (i < children.length - 1)
@@ -62,7 +59,7 @@ public class TreePrinter {
      * of Branchable nodes.
      * @param branch A list of nodes that make up the given branch
      */
-    public static void printPath(ArrayList<AbstractBranchable> branch) {
+    public static void printPath(ArrayList<Branchable> branch) {
         if (branch == null)
             System.out.println("[None]");
         else {
